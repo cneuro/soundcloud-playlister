@@ -8,7 +8,7 @@ last edit: 9 Nov 2012
 About
 -----
 
-SoundCloud Playlister is a web-app that allows Soundcloud ("SC") users to create, edit and manage simple playlists comprised of SC tracks, which can be played in succession in a playlist-like manner. It is written in Javascript ("JS") using Meteor 0.5.0 (http://www.meteor.com/) with the majority of functionality encapsulated in a client-side (browser-loaded) JS file ("playlister.js"), along with a minimal server-side JS file ("publisher.js") based on Node.js and MongoDB running the database backend.
+SoundCloud Playlister is a web-app that allows Soundcloud ("SC") users to create, edit and manage simple playlists comprised of SC tracks, which can be played in succession in a playlist-like manner. It is written in Javascript ("JS") using Meteor 0.5.0 (http://www.meteor.com/) with the majority of functionality encapsulated in a client-side (browser-loaded) JS file ("playlister.js"), along with a minimal server-side JS file ("publisher.js") based on Node.js and MongoDB running the database backend. The app also uses a substantial amount of features from the SoundCloud API & SDK.
 
 Please refer to SoundCloud Playlister's Github repository (https://github.com/chrisneuro/soundcloud-playlister/) for any further dissemination of functionality and assets.
 
