@@ -18,6 +18,8 @@ This web-app was initially put together for the SoundCloud Web Dev challenge.
 How to use
 ----------
 
+Go to www.machinater.com/soundcloud-playlister/
+
 *Using the app as Guest:*
 The first time, you will be using the app as Guest. A Guest has all capabilites that a logged-in user has, but once the browser window is refreshed, all data will be lost because the session will be reset.
 
@@ -51,6 +53,10 @@ To move a track up in the ordering of the other tracks in the playlist, click th
 *Deleting a track or a playlist:*
 Click the small grey cross that appears when you hover over the playlist or track. It will turn orange. Click this again to confirm removal. When you move your mouse away while the orange cross is orange, the request is cancelled.
 
+How to run
+----------
+
+If want to run this on your own localhost to make changes, you need to install Meteor framework first. For details, please go to www.meteor.com.
 
 Outstanding issues
 ------------------
