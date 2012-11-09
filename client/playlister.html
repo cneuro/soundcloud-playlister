@@ -1,0 +1,153 @@
+
+<head>
+	<title>SoundCloud Playlister</title>
+	<script src="//connect.soundcloud.com/sdk.js" type="text/javascript"></script>
+	<script src="http://w.soundcloud.com/player/api.js" type="text/javascript"></script>
+	<script>
+		SC.initialize({
+			client_id: "9b368e92a10eec6e16c7d5f6d01a3153",
+			redirect_uri: Meteor.absoluteUrl("server/sc-callback.html")
+		});
+	</script>
+</head>
+
+<body>
+	<div class="pane" id="top-pane">
+		{{> login}}
+	</div>
+	<div id="main-pane">
+		<div id="left-pane">
+			{{> playlists}}
+		</div>
+		<div id="right-pane">
+			{{#if any_playlist_selected}}
+				<div class="pane" id="control-pane">
+					{{> control}}
+				</div>
+				{{#if any_track_selected}}
+					{{> loaded_track}}
+				{{/if}}
+				{{#if playlist_has_tracks}}
+					<div class="pane" id="track-pane">
+						{{> tracks}}
+					</div>
+				{{/if}}
+			{{/if}}
+		</div>
+	</div>
+	<div id="bottom-pane">
+		Made by <a href="mailto:chris.nater@gmail.com">Chris Nater</a>, 2012.
+		Powered by <a href="http://www.meteor.com/">Meteor</a> 0.5.0.
+		Fork this on <a href="https://github.com/chrisneuro/soundcloud-playlister">Github</a>!
+	</div>
+	<div id="dialog-confirm-removal" style="display:none;" title="Remove this item?">
+    	<p><span class="ui-icon ui-icon-alert"></span>This item will be permanently deleted and cannot be recovered. Are you sure?</p>
+	</div>
+</body>
+
+<template name="login">
+	<div class="centered-spaced">
+		<table>
+			<tr>
+				<td><h3>SoundCloud Playlister</h3></td>
+				<td class="centered">{{login_status 0}}</td>
+				<td><div id="sc-login-btn" class="{{login_status 1}}"></div></td>
+			</tr>
+		</table>
+	</div>
+</template>
+
+<template name="control">
+	<div id="playlist-description" class="input-div">
+		{{#if editing_description}}
+			<input type="text" id="playlist-description-input" placeholder='{{description_placeholder}}' value="{{description}}" />
+        {{else}}
+			<a class="name-display" id="playlist-description-display" href="">{{description}}</a>
+		{{/if}}
+	</div>
+	<div id="playlist-add-track" class="input-div">
+		<input type="text" id="new-track" placeholder="New SoundCloud track URL" />
+	</div>
+</template>
+
+<template name="playlists">
+	<div class="pane" id="playlist-creation-pane">
+		<h3>{{user_name}}'s playlists</h3>
+		<div id="new-playlist-box" class="input-div">
+			<input type="text" id="new-playlist" placeholder="New playlist" />
+		</div>
+	</div>
+	{{#if owner_has_playlists}}
+		<div class="pane" id="playlists">
+			{{#each owners_playlists}}
+				<div class="playlist {{selected_class}} {{playing_class}}" id="playlist-{{playlist_id}}">
+					{{#if editing_name}}
+						<input id="playlist-name-input" type="text" value="{{playlist_name}}" />
+			        {{else}}
+						<table class="display">
+							<tr>
+								<td style="width:75%" class="name-display-container"><a class="name-display" href="#">{{this_playlist_name}}</a></td>
+<!-- 								<td><div class="play-btn"></div></td> -->
+								<td><div class="remove"></div></td>
+							</tr>
+						</table>                 
+					{{/if}}
+				</div>
+			{{/each}}
+		</div>
+	{{/if}}
+</template>
+
+<template name="loaded_track">
+	<div class="pane" id="active-track-pane">
+		<div id="player-loader"></div>
+		<div id="embedded-player"></div>
+	</div>
+</template>
+
+<template name="tracks">
+	<div id="track-loader"></div>
+	{{#each tracks_to_display}}
+<!-- 	everything flows better and is more predictable cross-browser with tables! -->
+		<table class="track-view {{selected_class}}" id="track-view-{{track_id}}">
+			<tr>
+				<td class="track-contents loading">
+					<table>
+						<tr>
+							<td class="track-order" style="width:50px;text-align:center;">{{track_order}}</td>
+							<td style="width:100px"><img class="track-artwork" height="70%" width="70%" /></td>
+							<td>
+								<div class="artist-name"></div>
+								<div class="track-name"></div>
+								<div>
+									<table style="width:200px;">
+										<tr>
+											<td><div class="track-stats-widget track-plays-widget"></div></td>
+											<td class="track-plays"></td>
+											<td><div class="track-stats-widget track-comments-widget"></div></td>
+											<td class="track-comments"></td>
+											<td><div class="track-stats-widget track-likes-widget"></div></td>
+											<td class="track-likes"></td>
+										</tr>
+									</table>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td class="track-control" style="width:15%">
+					<table>
+						<tr>			
+							<td class="move-track">
+								<div class="arrow up"></div>
+								<div class="arrow down"></div>
+							</td>
+							<td><div class="remove"></div></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		{{track_preview}}
+	{{/each}}
+</template>

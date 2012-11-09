@@ -1,0 +1,269 @@
+
+/* Basic element styling and inter-browser 'reset' */
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+}
+table {
+	width: 100%;
+}
+table.display td, table.display tr {
+	height:30px;
+}
+td {
+	padding: 5px;
+}
+#track-pane table, #track-pane table td {
+	margin:0;
+	padding:0;
+}
+td, th {
+	vertical-align: middle;
+}
+td.centered {
+	text-align:center;
+}
+html, body {
+    height: 100%;
+}
+body, input, h3, a {
+	font-family: "Helvetica Neue", Helvetica, sans-serif;
+}
+body {
+    font-size: 16px;
+    color: #333333;
+    /* A subdued grey CSS3 gradient for newer browsers (made with http://gradients.glrzad.com/) */
+	background-image: linear-gradient(bottom, #B3B1B3 29%, #E3E3E3 65%);
+	background-image: -o-linear-gradient(bottom, #B3B1B3 29%, #E3E3E3 65%);
+	background-image: -moz-linear-gradient(bottom, #B3B1B3 29%, #E3E3E3 65%);
+	background-image: -webkit-linear-gradient(bottom, #B3B1B3 29%, #E3E3E3 65%);
+	background-image: -ms-linear-gradient(bottom, #B3B1B3 29%, #E3E3E3 65%);
+	height:100%
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.29, #B3B1B3),
+		color-stop(0.65, #E3E3E3)
+	);
+}
+h3 {
+	padding: 5px;
+	font-weight:normal;
+	text-shadow: 1px 1px 4px #FA9B3C;
+}
+
+input {
+    padding: 3px 6px;
+    margin-top: 5px;
+    width: 95%;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    font-size: 100%;
+}
+
+/* Positional & border setup of all the panes */
+
+.pane {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 5px;
+    margin: 0 5px 5px 5px;
+    overflow: hidden;
+	border:1px solid #999;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    background-color: #F0F0F0;    
+}
+#top-pane {
+	margin-top:5px;
+	padding-top:0;
+	padding-bottom:0;
+}
+#bottom-pane a, #bottom-pane a:visited {
+	color: #5a8a91;
+}
+#main-pane {
+	height: 89%;
+}
+#playlist-creation-pane, #control-pane {
+	min-height: 85px;
+}
+#right-pane {
+	float: right;
+	height:90%;
+	width: 75%;
+}
+#left-pane {
+	height:90%;
+	float:left;
+    width: 25%;
+}
+#playlists, #track-pane {
+	max-height: 90%;
+	overflow: auto;
+}
+#bottom-pane {
+	font-size:80%;
+}
+
+/* Widget styling & positioning */
+
+.track-view {
+	cursor:pointer;
+	margin: 0 5px 5px 5px;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;	
+}
+.track-view:hover, .playlist:hover {
+	background-color: #ffd8a0;
+}
+#playlists .playlist {
+	margin:5px;
+	border:1px solid #999;
+	-moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.input-div {
+	width:100%;
+	padding:5px;
+}
+.name-display {
+	padding:15px 0 15px 5px;
+    color: #333333;
+    text-decoration: none;
+}
+#playlist-description-display {
+	font-size:120%;
+	font-style:oblique;
+}
+.sc-track {
+	width:95%;
+}
+.track-view.selected, .playlist.selected {
+	background-color: #ff812d;
+}
+.track-name {
+	font-weight: bold;
+}
+.track-stats-widget {
+	height: 10px;
+	width: 10px;
+	/* although I couldn't decode this particular base64 URL, I found it while Firebugging the SoundCloud API playground (http://w.soundcloud.com/player/api_playground.html)
+	 * seems to give me the widgets I'm after, hope you don't mind :) */
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAyCAYAAABLXmvvAAADQ0lEQVR42u2Wv0scQRTHYxfwL1AwYHNgIXeeTSAQtkt1f0BAxDJ/gKXieqOipPAXqfIPnFx9IClUkATPdNqraKtyBEFPyU2+L8w4w8zsvDVbSEgefNib2ed8Zty37+6FlLIm+Ujm5+dr9XpdxkjTNKlWq7Xx8XEZo1KpJBDnC0aqMQKG/+J/Q5zkqeqzszNWSjlUsXmrWqPjPY0DJPbJj4+PgxvU+VoyNjYWXM8MolKDkrK5tpQR54aV8hixABQ1YHczYSejMwk6MXUxGutuRvPOaQWQ1MVobHWzxzwjNeGNbakmNLalBn+sxHzoZ8uhxJLj2cWCkQpK3N3djUpxX4sFIxZOcWVLFcLIfanOjci94nLkvtSRR6URuYi9xyIideS+NCIXbANhpBrBSW15wc7Fb5DHF0+AEpeMJjEB2Dx0qolyuVzKI6ZIQcJ9QWxsbGxCHs1T7TKlrz9ebCIFpSyxBn06RZSyxITeAJ2eF5tIYmJN6PRZX/6s2JcbMSfXYkZe/MT4uePlMtJiz3hvb09eXl4qKf+MC1c1hHRKs0G+qou/x0dHR/Lk5GRTb7D4e8zDbJCDFw+CKTBJnyMdbBBMgUmQmYcYBFNgkj5nifvBvjSxA166i01PT/cvLCy0IZSEEOIrrl4eoh/sA6nYAS9D4jLoWeI7MOIuiJb5WksBdbCfq6urlYC4DHqW+A6MhMRD4NoSX4EBd8F2u/1ueXn5UbyysiIPDw/fBsRD4NoSX4GBkLgPNC1xI/Tcbm9vXzUaja4Wb21tdUMbRPSBpiVuxIprFDyA+0j19p2enn7RjeTi4qIVKa5R8ADuQSlLPAyWQE9Rpzl3sZmZmeH19fXP+sRra2ufaC4gHQZLoKeo05wtroIm6Eg/OupeFZLq3NxcE8X0g4Q2NEf3KAeLE03QAdKho+5VSbyjJF1w40BzFNsoqO/q9ZGLi4s2NKcL7Zt6bSToghuHrrq3nbfT5N7gUzrXM+CLKd7k+NEnZ2dnmTxvPV7sj31xq9X6ENkIu54zEb66Ai12x67AvRYSk8C9/qlYMokUv08VE+vT513vKSeOis/Pz1XuX/Cv9qqQGxuRN861XqH3+ODg4GPk79j1fgHUqIiK1TNcdgAAAABJRU5ErkJggg==");
+}
+.track-stats-widget.track-plays-widget {
+	background-position: -10px -20px;
+}
+.track-stats-widget.track-comments-widget {
+	background-position: -10px 0;
+}
+.track-stats-widget.track-likes-widget {
+	background-position: -10px -10px;
+}
+
+/* Widget sprites */
+
+.loading {
+	height: 24px;
+	width: 24px;
+	/* loading indicator sprite courtesy of http://ajaxload.info/ */
+	background: url('../pacman-loader.gif') no-repeat 0 0;
+}
+#sc-login-btn {
+	float: right;
+	cursor: pointer;
+	height: 29px;
+	width: 242px;
+	background: url('../sc-connect.png') no-repeat 0 0;
+}
+#sc-login-btn.logged_out {
+	background-position: 0 0;
+}
+#sc-login-btn.logged_in {
+	background-position: 0 -29px;
+}
+.remove {
+	cursor: pointer;
+	height:20px;
+	width:20px;
+}
+.playlist:hover .remove {
+	background: url('../remove.png') no-repeat 0 0;
+}
+.playlist:hover .remove:hover {
+    background-position: 0 -20px;
+}
+.playlist:hover .remove.confirm, .playlist:hover .remove.confirm:hover  {
+    background-position: 0 -40px;
+}
+
+/** assets for playlist play-all and pause buttons */
+
+/* .playlist.stopped:hover .play-btn { */
+/* 	height: 30px; */
+/*     width: 30px; */
+/*     background: url('../sc-play.png') no-repeat 0 0; */
+/* } */
+/* .playlist.stopped .play-btn:hover { */
+/*     background-position: 0 -30px; */
+/* } */
+/* .playlist.playing .play-btn { */
+/* 	height: 30px; */
+/*     width: 30px; */
+/*     background: url('../sc-pause.png') no-repeat 0 0; */
+/* } */
+/* .playlist.playing .play-btn:hover { */
+/*     background-position: 0 -30px; */
+/* } */
+
+.yes-no-switch {
+	cursor: pointer;
+    height: 27px;
+    width: 77px;
+    background: url('../yes-no.png') no-repeat 0 -27px;
+}
+.yes-no-switch.active {
+	background-position: 0 0;
+}
+.track-view:hover .remove {
+    background: url('../remove.png') no-repeat 0 0;
+}
+.track-view:hover .remove:hover {
+    background-position: 0 -20px;
+}
+.track-view:hover .remove.confirm, .track-view:hover .remove.confirm:hover  {
+    background-position: 0 -40px;
+}
+.arrow  {
+	margin:5px;
+	cursor: pointer;
+	height: 25px;
+    width: 25px;
+}
+.track-view:hover .arrow {
+    background: url('../updown-arrows.png') no-repeat 0 0;
+}
+.track-view:hover .arrow.down {
+    background-position: 0 -25px;
+}
+.arrow.up:hover {
+    background-position: -25px 0;
+}
+.track-view:hover .arrow.down:hover {
+    background-position: -25px -25px;
+}
