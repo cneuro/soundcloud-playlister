@@ -12,13 +12,13 @@
  * @author Chris Nater
  *
  * BUGS:
- * TODO get sc_widget.load() (#1) to do work as intended so that other tracks than the very first one selected can be played!
+ * TODO#1 get sc_widget.load() to work as intended so that the global SC.Widget can be defined once on demand and SC.oEmbed doesn't need to get called every time and rebuild the embedded player iframe
  * TODO the mouseup event on remove icons is sometimes fired when a playlist/track gets confirmed to be removed and the mouse remains hovered over the next element's remove button after
  *      it gets removed from the list
  * 
  * FEATURES TO ADD:
  * TODO implement global playlist control via play/pause buttons on the playlist displays themselves, for true 'one-click' functionality
- * TODO decouple the global playlist & track playing functionality from management and browsing of other tracks and playlists, so flow is not interrupted and use is more intuitive
+ * TODO decouple the playlist & track playing functionality from management and browsing of other tracks and playlists, so flow is not interrupted while playing tracks
  * TODO show the playing icon in the title bar when playing a track!
  * TODO allow URL linking to individual playlists for anyone
  * TODO add a time-out check to alert user or show appropriate error message in appropriate div, if the getJSON requests return a 404
@@ -154,14 +154,15 @@ var activateInput = function (input) {
 	input.select();
 };
 /**
- * embed the SoundCloud widget in the active-track-pane div and bind functions to the player's events
+ * embed the SoundCloud widget in the active track container and bind functions to the player's events
  * 
- * METHODOLOGY EXPLANATION: I don't just delare a global SC.Widget object and call .load() with the the user's new track choice,
+ * I don't just delare a global SC.Widget object and call .load() with the the user's new track choice,
  * because an iframe must already be present for it to become an SC.Widget. Since I want to keep the UI as clean as possible and only
  * build it up as the user makes choices, I must call the existing-iframe-independent oEmbed to get the iframe contents on demand,
  * and bind a new SC.Widget with new event methods every time the track is changed.
- * --- It is inefficient in terms of CPU and memory usage to rebuild a and rebind an SC.Widget on every change
- * +++ keeps the UI initially clean without a 'standard' track in the initial iframe and gives me more control over the program flow
+ * 
+ * If .load() would work here as expected (see TODO(#1)), none of this would be an issue.
+ * 
  */
 function embed_track() {
 	var track_id = Session.get('selected_track_id');
@@ -170,9 +171,12 @@ function embed_track() {
 		// show that the embedded iframe is loading
 		var widget_container_id = '#embedded-player';
 		var loading_container = $('#player-loader');
+		// empty the contents of any previous iframe (TODO#1)
+		$(widget_container_id).empty();
 		loading_container.addClass('loading');
 		var selected_track = Tracks.findOne(track_id);
-		if (sc_widget == null) {
+		// normally, we only need to do this once (TODO#1)
+//		if (sc_widget == null) {
 			SC.oEmbed(selected_track.url, {max_height: '166px', auto_play: true}, function (result) {
 				// get the id of the table cell that houses the current track/iframe
 				if (result) {
@@ -198,6 +202,7 @@ function embed_track() {
 						// now set all appropriate app-wide parameters and methods on the widget's events
 						var playlist_id  = Session.get('selected_playlist_id');
 						// check that the user hasn't globally paused the playlist while a track is playing
+						// not very useful for now, since global play function not implemented
 						sc_widget.bind(SC.Widget.Events.PLAY_PROGRESS, function() {
 							if (!Session.get('playing_playlist_id')) {;
 								sc_widget.pause();
@@ -231,8 +236,13 @@ function embed_track() {
 								else {
 									next_track = Tracks.findOne({playlist_id: selected_track.playlist_id, order: (selected_track.order+1)});
 								}
-								Session.set('selected_track_id', next_track._id);
-								reloadSCWidget(next_track.url);
+								if (next_track) {
+									console.log('next track!!!');
+									Session.set('selected_track_id', next_track._id);
+									// should just need to load() the next track, not have to do this whole thing again (TODO#1)
+									embed_track();
+//									reloadSCWidget(next_track.sc_id);
+								}
 							}
 						});
 					}
@@ -241,17 +251,16 @@ function embed_track() {
 					loading_container.html("Couldn't load the track at "+track_url);
 				}
 			});
-		}
-		// sc_widget is already defined, just need to reload the contents with the new selections
-		else {
-			reloadSCWidget(selected_track.url);
-		}
+//		}
+//		// sc_widget is already defined, just need to reload the contents with the new selections (TODO#1)
+//		else {
+//			reloadSCWidget(selected_track.sc_id);
+//		}
 	}
 }
-// reload the existing embedded track iframe with a new URL
-function reloadSCWidget(track_url) {
-	// TODO(#1)
-	var url = "http://api.soundcloud.com/tracks/"+track_url+"?client_id="+Session.get('client_id');
+// reload the existing embedded track iframe with a new URL (TODO#1)
+function reloadSCWidget(track_id) {
+	var url = "http://api.soundcloud.com/tracks/"+track_id+"?client_id="+Session.get('client_id');
 	console.log('reloading widget with new track: '+url);
     console.log('current sc_widget=');	
 	console.log(sc_widget);
@@ -261,9 +270,11 @@ function reloadSCWidget(track_url) {
         console.log(this);
     };
     console.log(widgetOptions);
-    var result = sc_widget.load(url, widgetOptions);
-    console.log('load result=');
-	console.log(result);
+    /** calling .load on the predefined SC Widget seems to not work
+      * the iframe object 'disappears' from the container once this is called, even though sc_widget still seems to be a valid SC.Widget object
+      */
+    sc_widget.load(url, widgetOptions);
+	console.log(sc_widget);
 }
 
 // ### Playlists ###
