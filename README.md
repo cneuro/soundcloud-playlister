@@ -62,14 +62,12 @@ Outstanding issues
 ------------------
 
 Bugs:
- - get sc_widget.load() (#1) to do work as intended so that other tracks than the very first one selected can be played!
- - the mouseup event on remove icons is sometimes fired when a playlist/track gets confirmed to be removed and the mouse remains hovered over the next element's remove button after it gets removed from the list
+- get sc_widget.load() to work as intended so that the global SC.Widget can be defined once on demand and SC.oEmbed doesn't need to get called every time and rebuild the embedded player iframe
+- the mouseup event on remove icons is sometimes fired when a playlist/track gets confirmed to be removed and the mouse remains hovered over the next element's remove button after it gets removed from the list
 
-Features to add:
- - implement global playlist control via play/pause buttons on the playlist displays themselves, for true 'one-click' functionality
- - decouple the global playlist & track playing functionality from management and browsing of other tracks and playlists, so flow is not interrupted and use is more intuitive
- - show the playing icon in the title bar when playing a track!
- - allow URL linking to individual playlists for anyone
- - add a time-out check to alert user or show appropriate error message in appropriate div, if the getJSON requests return a 404
- - better and more secure session & token management, perhaps also app's own account system (easy with Meteor Accounts). right now, having a unique Guest for every single visitor will explode the database at some point
-
+Future amendments:
+- implement global playlist control via play/pause buttons on the playlist displays themselves, for true 'one-click' functionality
+- decouple the playlist & track playing functionality from management and browsing of other tracks and playlists, so flow is not interrupted while playing tracks
+- show the playing icon in the title bar when playing a track!
+- allow URL linking to individual playlists for anyone
+- add a time-out check to alert user or show appropriate error message in appropriate div, if the getJSON requests return a 404
